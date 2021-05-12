@@ -28,7 +28,7 @@ public class Section2 implements Runnable {
                 while (true) {
                     if (Thread.currentThread().isInterrupted()) {
                         System.out.println("这个线程被中断了！");
-                        Thread.currentThread().interrupted();
+                        interrupted();
                         break;
                     }
                     yield();
