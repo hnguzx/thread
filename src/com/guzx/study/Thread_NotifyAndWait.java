@@ -1,4 +1,4 @@
-package com.guzx.section1;
+package com.guzx.study;
 
 import java.util.Base64;
 
