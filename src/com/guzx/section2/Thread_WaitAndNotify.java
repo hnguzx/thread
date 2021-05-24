@@ -1,6 +1,6 @@
 package com.guzx.section2;
 
-public class Section2_SImpleWN {
+public class Thread_WaitAndNotify {
     final static Object obj = new Object();
 
     public static class T1 extends Thread {

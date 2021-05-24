@@ -1,6 +1,6 @@
 package com.guzx.section2;
 
-public class Section2_BadSuspend {
+public class Thread_SuspendAndResume {
     public static Object obj = new Object();
     static ChangeObjectThread t1 = new ChangeObjectThread("T1");
     static ChangeObjectThread t2 = new ChangeObjectThread("T2");
