@@ -16,13 +16,13 @@ public class Section2_ThreadGroup implements Runnable {
     @Override
     public void run() {
         String groupName = Thread.currentThread().getThreadGroup().getName() + "-" + Thread.currentThread().getName();
-        while (true) {
+        /*while (true) {
             System.out.println("i'm " + groupName);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }

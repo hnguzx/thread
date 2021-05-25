@@ -5,7 +5,7 @@ import org.omg.PortableInterceptor.INACTIVE;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class Section2_ArrayList {
+public class Thread_ArrayListOrVector {
     // 线程不安全
 //    static ArrayList<Integer> arrayList = new ArrayList<>();
     // 线程安全

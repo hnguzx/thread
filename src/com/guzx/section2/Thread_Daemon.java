@@ -1,6 +1,6 @@
 package com.guzx.section2;
 
-public class Section2_Daemon {
+public class Thread_Daemon {
 
 
     public static class DaemonT extends Thread {

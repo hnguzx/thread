@@ -1,6 +1,6 @@
 package com.guzx.section2;
 
-public class Section2_GoodSuspend {
+public class Thread_CustomerSuspend {
     public static Object obj = new Object();
 
     public static class ChangeObjectThread extends Thread {
