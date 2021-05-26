@@ -3,8 +3,9 @@ package com.guzx.section3;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Section3_Condition implements Runnable {
+public class Thread_Condition implements Runnable {
     public static ReentrantLock lock = new ReentrantLock();
+    // 与重入锁绑定
     public static Condition condition = lock.newCondition();
 
     @Override
@@ -21,9 +22,9 @@ public class Section3_Condition implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Section3_Condition t1 = new Section3_Condition();
-        Thread thread1 = new Thread(t1);
-        thread1.start();
+        Thread_Condition t1 = new Thread_Condition();
+        Thread thread = new Thread(t1);
+        thread.start();
         Thread.sleep(3000);
         lock.lock();
         condition.signal();

@@ -2,7 +2,10 @@ package com.guzx.section3;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Section3 implements Runnable {
+/**
+ * @author Administrator
+ */
+public class Thread_ReentrantLock implements Runnable {
     public static ReentrantLock lock = new ReentrantLock();
     public static int i = 0;
 
@@ -19,7 +22,7 @@ public class Section3 implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Section3 t1 = new Section3();
+        Thread_ReentrantLock t1 = new Thread_ReentrantLock();
         Thread thread1 = new Thread(t1);
         Thread thread2 = new Thread(t1);
 
