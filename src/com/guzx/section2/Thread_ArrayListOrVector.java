@@ -3,6 +3,8 @@ package com.guzx.section2;
 import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class Thread_ArrayListOrVector {
@@ -14,13 +16,21 @@ public class Thread_ArrayListOrVector {
     public static class AddThread implements Runnable {
         @Override
         public void run() {
-            for (int i = 0; i < 100000; i++) {
-                arrayList.add(i);
-            }
+//            synchronized (this){
+                for (int i = 0; i < 100000; i++) {
+                    arrayList.add(i);
+                }
+//            }
         }
     }
 
+
+
     public static void main(String[] args) throws InterruptedException {
+//        AddThread addThread = new AddThread();
+
+//        Thread t1 = new Thread(addThread);
+//        Thread t2 = new Thread(addThread);
         Thread t1 = new Thread(new AddThread());
         Thread t2 = new Thread(new AddThread());
         t1.start();

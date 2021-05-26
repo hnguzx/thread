@@ -1,13 +1,13 @@
 package com.guzx.section2;
 
-public class Section2_Priority {
+public class Thread_Priority {
     public static class HeightPriority extends Thread {
         static int count = 0;
 
         @Override
         public void run() {
             while (true) {
-                synchronized (Section2_Priority.class) {
+                synchronized (Thread_Priority.class) {
                     count++;
                     if (count > 1000000) {
                         System.out.println("HeightPriority is complete");
@@ -24,7 +24,7 @@ public class Section2_Priority {
         @Override
         public void run() {
             while (true) {
-                synchronized (Section2_Priority.class) {
+                synchronized (Thread_Priority.class) {
                     count++;
                     if (count > 1000000) {
                         System.out.println("LowPriority is complete");

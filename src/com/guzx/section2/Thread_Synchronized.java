@@ -1,20 +1,18 @@
 package com.guzx.section2;
 
-public class Section2_Sync implements Runnable {
+public class Thread_Synchronized implements Runnable {
 
-    static Section2_Sync instance = new Section2_Sync();
+    static Thread_Synchronized instance = new Thread_Synchronized();
     static volatile int i = 0;
 
-    public static synchronized void increase() {
+    public synchronized void increase() {
         i++;
     }
 
     @Override
     public void run() {
-        synchronized (instance){
-            for (int j = 0; j < 1000000; j++) {
-                increase();
-            }
+        for (int j = 0; j < 1000000; j++) {
+            increase();
         }
     }
 
