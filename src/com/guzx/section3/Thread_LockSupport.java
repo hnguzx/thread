@@ -2,7 +2,7 @@ package com.guzx.section3;
 
 import java.util.concurrent.locks.LockSupport;
 
-public class Section3_LS {
+public class Thread_LockSupport {
     public static Object u = new Object();
 
     public static class ChangeObjectThread extends Thread{
@@ -15,7 +15,7 @@ public class Section3_LS {
         public void run() {
             synchronized (u){
                 System.out.println("in " + getName());
-                LockSupport.park();
+                LockSupport.park(this);
             }
         }
     }

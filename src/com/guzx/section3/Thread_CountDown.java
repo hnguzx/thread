@@ -5,19 +5,24 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Section3_CountDown implements Runnable {
+/**
+ * 倒计数器
+ */
+public class Thread_CountDown implements Runnable {
     static final CountDownLatch end = new CountDownLatch(10);
-    static final Section3_CountDown demo = new Section3_CountDown();
+    static final Thread_CountDown demo = new Thread_CountDown();
 
 
     @Override
     public void run() {
         try {
-            Thread.sleep(new Random().nextInt() * 1000);
+            Thread.sleep(1000);
             System.out.println("准备好了");
-            end.countDown();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            // 等待数量减1
+            end.countDown();
         }
     }
 
@@ -27,6 +32,7 @@ public class Section3_CountDown implements Runnable {
         for (int i = 0; i < 10; i++) {
             executorService.submit(demo);
         }
+        // 等待所有的任务完成
         end.await();
         System.out.println("完成");
         executorService.shutdown();

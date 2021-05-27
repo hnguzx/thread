@@ -3,6 +3,9 @@ package com.guzx.section3;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 与wait和notify方法类似
+ */
 public class Thread_Condition implements Runnable {
     public static ReentrantLock lock = new ReentrantLock();
     // 与重入锁绑定
@@ -12,8 +15,8 @@ public class Thread_Condition implements Runnable {
     public void run() {
         try {
             lock.lock();
-            condition.await();
             System.out.println("线程相当于挂起了！");
+            condition.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
