@@ -8,7 +8,7 @@ import com.google.common.util.concurrent.RateLimiter;
  * @date 2021/5/27 20:52
  * @describe 限流
  */
-public class Thread_RateLimiter {
+public class Thread_Guava_RateLimiter {
 
     // RateLimiter会按照一定的频率往桶里扔令牌，线程拿到令牌才能执行
     static RateLimiter limiter = RateLimiter.create(2);
