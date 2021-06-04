@@ -40,20 +40,29 @@ public class Main {
                 threadFactory,
                 ProducerType.SINGLE,
                 new BusySpinWaitStrategy());
-
+        // 不重复消费
         disruptor.handleEventsWithWorkerPool(
                 new Consumer(),
                 new Consumer(),
                 new Consumer(),
                 new Consumer()
         );
+        // 重复消费
+        /*disruptor.handleEventsWith(
+                new Consumer2(),
+                new Consumer2(),
+                new Consumer2(),
+                new Consumer2()
+        );*/
+
+
         disruptor.start();
 
         RingBuffer<PCData> ringBuffer = disruptor.getRingBuffer();
         Producer producer = new Producer(ringBuffer);
         // 分配指定字节大小的缓冲区
         ByteBuffer allocate = ByteBuffer.allocate(8);
-        for (long i = 0; i<100; i++) {
+        for (long i = 0; i < 100; i++) {
 
             allocate.putLong(0, i);
             producer.pushData(allocate);
