@@ -13,6 +13,8 @@ public class Thread_ThreadLocal_Property {
     public static final int gen_count = 10000000;
     public static final int thread_count = 4;
     static ExecutorService executorService = Executors.newFixedThreadPool(thread_count);
+//    ThreadPoolExecutor threadPool = new ThreadPoolExecutor(thread_count, thread_count, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
+
     public static Random random = new Random(123);
 
     public static ThreadLocal<Random> threadLocal = new ThreadLocal<Random>() {
