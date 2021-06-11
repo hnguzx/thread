@@ -13,14 +13,17 @@ import java.util.stream.Stream;
  */
 public class StreamDemo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
 //        testConsumer();
 //        functionTest();
 //        predicateTest();
 //        streamTest();
 //        streamAmongTest();
 //        streamTerminalTest();
-        optionalTest();
+//        optionalTest();
+//        biFunctionTest();
+//        reduceTest();
+        collectTest();
     }
 
     public static void testConsumer() {
@@ -86,8 +89,15 @@ public class StreamDemo {
                 return ++integer;
             }
         });*/
-        Stream<Integer> iterate = Stream.iterate(1, integer -> ++integer);
-//        iterate.limit(10).forEach(System.out::print);
+        User user = new User(1, "guzx");
+        Stream<User> iterate = Stream.iterate(user, new UnaryOperator<User>() {
+            @Override
+            public User apply(User t) {
+                User user1 = new User(t.getAge() + 2, t.getName() + t.getAge());
+                return user1;
+            }
+        });
+        iterate.limit(10).forEach(System.out::println);
 
         /*Stream<Double> generate = Stream.generate(new Supplier<Double>() {
             @Override
@@ -98,22 +108,28 @@ public class StreamDemo {
         Stream<Double> generate = Stream.generate(Math::random);
 //        generate.limit(10).forEach(System.out::print);
 
-        Stream<? extends Number> concat = Stream.concat(iterate, generate);
-        concat.limit(10).forEach(System.out::print);
+//        Stream<? extends Number> concat = Stream.concat(iterate, generate);
+//        concat.limit(10).forEach(System.out::print);
     }
 
     // 流中数据只能使用一次
     // 中间方法，返回Stream
     public static void streamAmongTest() {
         Stream<Integer> iterate = Stream.iterate(1, integer -> ++integer);
-        Stream<Integer> sequential = iterate.sequential();
-//        Stream<Integer> parallel = iterate.parallel();
-//        Stream<Integer> unordered = iterate.unordered();
+        System.out.println(iterate.isParallel());
 
-//        System.out.println(iterate.equals(sequential));
-//        System.out.println(iterate.equals(parallel));
-//        System.out.println(sequential.equals(parallel));
-//        System.out.println(iterate.equals(unordered));
+        Stream<Integer> sequential = iterate.sequential();
+        System.out.println(sequential.isParallel());
+
+        Stream<Integer> parallel = iterate.parallel();
+        System.out.println(parallel.isParallel());
+
+        System.out.println(sequential.equals(parallel));
+
+        Stream<Integer> unordered = iterate.unordered();
+        System.out.println(unordered.isParallel());
+
+        System.out.println(iterate.equals(unordered));
 //        sequential.limit(10).forEach(System.out::print);
 
         // 获取n个元素组成的流
@@ -212,7 +228,9 @@ public class StreamDemo {
                 return result;
             }
         });*/
-//        Optional<Integer> max = parallel.max(Integer::compare);
+//        System.out.println(Integer.max(1, 2));
+//        System.out.println(Integer.compare(1, 2));
+//        Optional<Integer> max = parallel.max(Integer::max);
 //        System.out.println(max.get());
 
         // 获取流中按指定规则的最小的元素
@@ -246,22 +264,182 @@ public class StreamDemo {
 //        System.out.println(first.get());
 
         // 判断是否当前Stream对象是并行的
-        boolean isParallel = parallel.isParallel();
-        System.out.println(isParallel);
+//        boolean isParallel = parallel.isParallel();
+//        System.out.println(isParallel);
     }
 
-    public static void optionalTest() {
-        Optional<Object> empty = Optional.empty();
+    public static void optionalTest() throws Throwable {
+        // 用于创建一个空的Optional对象；其value属性为Null。
+        Optional<String> empty = Optional.empty();
+        // 根据传入的值构建一个Optional对象;
+        // 传入的值必须是非空值，否则如果传入的值为空值，则会抛出空指针异常。
         Optional<String> optionalS = Optional.of("guzx");
-        Optional<Object> o = Optional.ofNullable(null);
+        // 根据传入值构建一个Optional对象
+        // 传入的值可以是空值，如果传入的值是空值，则与empty返回的结果是一样的。
+        Optional<String> o = Optional.ofNullable(null);
         // 获取optional中的值
         System.out.println(optionalS.get());
         // 判断optional中的值是否为null
         System.out.println(optionalS.isPresent());
+        // 当Value不为空时，执行传入的Consumer；
         optionalS.ifPresent(x -> {
             String ai_lianghong = x.concat(" ai lianghong");
             System.out.println(ai_lianghong);
         });
 
+        // 当Value为空或者传入的Predicate对象调用test(value)返回False时，返回Empty对象；否则返回当前的Optional对象
+//        Optional<String> optionalS1 = o.filter(s -> s.startsWith("g"));
+//        System.out.println(optionalS1);
+
+        // 一对一转换：当Value为空时返回Empty对象，否则返回传入的Function执行apply(value)后的结果组装的Optional对象；
+//        Optional<Object> o1 = o.map(s -> s + ".txt");
+//        System.out.println(o1);
+
+        // 一对多转换：当Value为空时返回Empty对象，
+        // 否则传入的Function执行apply(value)后返回的结果（其返回结果直接是Optional对象）
+//        Optional<String> optionalS1 = optionalS.flatMap(s -> Optional.of(s + ".doc"));
+//        System.out.println(optionalS1);
+
+        // Value不为空则返回Value，否则返回传入的值；
+//        String other = optionalS.orElse("other");
+//        String other1 = o.orElse("other");
+//        System.out.println(other);
+//        System.out.println(other1);
+
+        // Value不为空则返回Value，否则返回传入的Supplier生成的值；
+        String orElseGet = optionalS.orElseGet(new Supplier<String>() {
+            @Override
+            public String get() {
+                return "orElseGet";
+            }
+        });
+        String orElseGet1 = o.orElseGet(() -> "orElseGet");
+        System.out.println(orElseGet);
+        System.out.println(orElseGet1);
+
+        // Value不为空则返回Value，否则抛出Supplier中生成的异常对象；
+//        String orElseThrow = optionalS.orElseThrow(() -> new Throwable("exception guzx"));
+//        System.out.println(orElseThrow);
+//        o.orElseThrow(() -> new Throwable("exception guzx"));
     }
+
+    public static void biFunctionTest() {
+        /*BiFunction<Integer, Double, String> biFunction = new BiFunction<Integer, Double, String>() {
+            @Override
+            public String apply(Integer integer, Double aDouble) {
+                return integer + "--" + aDouble;
+            }
+        };*/
+        BiFunction<Integer, Double, String> biFunction = (integer, aDouble) -> integer + "--" + aDouble;
+        String apply = biFunction.apply(2, 3.0);
+        System.out.println(apply);
+
+        /*BinaryOperator<String> binaryOperator = new BinaryOperator<String>() {
+            @Override
+            public String apply(String s, String s2) {
+                return s + s2;
+            }
+        };*/
+        BinaryOperator<String> binaryOperator = (s, s2) -> s + s2;
+        System.out.println(binaryOperator.apply("guzx", "lianghong"));
+
+        /*BiConsumer<Integer,String> biConsumer = new BiConsumer<Integer, String>() {
+            @Override
+            public void accept(Integer integer, String s) {
+                System.out.println(integer+s);
+            }
+        };*/
+        BiConsumer<Integer, String> biConsumer = (integer, s) -> System.out.println(integer + s);
+        biConsumer.accept(20, "guzhixiong");
+    }
+
+    public static void reduceTest() {
+        Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5, 6, 8, 7);
+        /*Optional<Integer> reduce = stream.reduce(new BinaryOperator<Integer>() {
+            @Override
+            public Integer apply(Integer integer, Integer integer2) {
+                return integer + integer2;
+            }
+        });*/
+        // 对所有元素进行二合运算
+//        Optional<Integer> reduce = stream.reduce(Integer::sum);
+//        System.out.println(reduce.get());
+        // 给定一个初始值，对所有元素进行二合运算
+//        Integer reduce = stream.reduce(4, Integer::sum);
+//        System.out.println(reduce);
+
+        // 串行情况下与两个参数基本一致
+        /*User user = new User(24, "guzx");
+        User reduce = stream.reduce(user, new BiFunction<User, Integer, User>() {
+            @Override
+            public User apply(User user, Integer integer) {
+                user.setAge(user.getAge() + integer);
+                return user;
+            }
+        }, new BinaryOperator<User>() {
+            @Override
+            public User apply(User user, User user2) {
+                return null;
+            }
+        });
+        System.out.println(reduce);*/
+
+        Stream<String> stream1 = Stream.of("aa", "ab", "ac", "dd").parallel();
+        /*ArrayList<String> arrayList = stream1.reduce(new ArrayList<String>(), new BiFunction<ArrayList<String>, String, ArrayList<String>>() {
+            @Override
+            public ArrayList<String> apply(ArrayList<String> strings, String s) {
+                strings.add(s);
+                return strings;
+            }
+        }, new BinaryOperator<ArrayList<String>>() {
+            @Override
+            public ArrayList<String> apply(ArrayList<String> strings, ArrayList<String> strings2) {
+                return strings;
+            }
+        });
+        System.out.println(arrayList);*/
+        /*Predicate<String> predicate = s -> s.contains("a");
+        ArrayList<String> arrayList = stream1.reduce(new ArrayList<>(), (strings, s) -> {
+            if (predicate.test(s)) {
+                strings.add(s);
+            }
+            return strings;
+        }, (strings, strings2) -> strings);
+        System.out.println(arrayList);*/
+
+        // 并行情况，初始值与Stream中的元素在biFunction进行并行处理，最后在binaryOperator中进行串行处理
+        Stream<Integer> parallel = Stream.of(1, 2, 3).parallel();
+        Integer reduce = parallel.reduce(4, Integer::sum, Integer::sum);
+        System.out.println(reduce);
+
+        Predicate<String> predicate = s -> s.contains("a");
+        ArrayList<String> arrayList = stream1.reduce(new ArrayList<>(), (strings, s) -> {
+            if (predicate.test(s)) {
+                strings.add(s);
+            }
+            return strings;
+        }, (strings, strings2) -> {
+            System.out.println(strings == strings2);
+            return strings;
+        });
+
+        System.out.println(arrayList);
+
+    }
+
+    public static void collectTest() {
+        Stream<String> stream = Stream.of("aa", "ab", "ac", "dd");
+        Predicate<String> predicate = t -> t.contains("a");
+
+        // 并行
+        Stream<String> parallel = stream.parallel();
+        ArrayList<String> collect = parallel.collect(ArrayList::new, (array, s) -> {
+            if (predicate.test(s)) {
+                array.add(s);
+            }
+        }, ArrayList::addAll);
+        System.out.println(collect);
+
+    }
+
 }
