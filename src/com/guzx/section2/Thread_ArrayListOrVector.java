@@ -1,10 +1,5 @@
 package com.guzx.section2;
 
-import org.omg.PortableInterceptor.INACTIVE;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 public class Thread_ArrayListOrVector {

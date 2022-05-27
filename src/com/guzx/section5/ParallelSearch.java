@@ -1,7 +1,5 @@
 package com.guzx.section5;
 
-import sun.nio.ch.ThreadPool;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;

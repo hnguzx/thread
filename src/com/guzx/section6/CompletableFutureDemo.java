@@ -1,7 +1,5 @@
 package com.guzx.section6;
 
-import sun.nio.ch.ThreadPool;
-
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Function;

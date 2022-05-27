@@ -1,7 +1,5 @@
 package com.guzx.section3;
 
-import javafx.print.PageOrientation;
-
 import java.util.AbstractQueue;
 import java.util.Collection;
 import java.util.Date;
